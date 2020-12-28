@@ -2,7 +2,7 @@
   <section class="catalog">
           <ProductList :products="products"/>
           <BasePagination
-          :page="page"
+          v-model="page"
           :count="countProducts"
           :per-page="productsPerPage"
           />
