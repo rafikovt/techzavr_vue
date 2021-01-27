@@ -13,6 +13,7 @@
       :price-from.sync="filterPriceFrom"
       :price-to.sync="filterPriceTo"
       :category-id.sync="filterCategoryId"
+      :color-id.sync="filterColorId"
       />
       <section class="catalog">
           <ProductList :products="products"/>
@@ -44,6 +45,7 @@ export default {
       filterPriceFrom: 0,
       filterPriceTo: 0,
       filterCategoryId: 0,
+      filterColorId: 0,
       page: 1,
       productsPerPage: 3,
     };
@@ -60,6 +62,10 @@ export default {
         : filteredProducts;
       filteredProducts = this.filterCategoryId
         ? filteredProducts.filter((product) => product.categoryId === this.filterCategoryId)
+        : filteredProducts;
+      filteredProducts = this.filterColorId
+        // eslint-disable-next-line max-len
+        ? filteredProducts.filter((product) => product.colors.some((color) => color.id === this.filterColorId))
         : filteredProducts;
 
       return filteredProducts;
