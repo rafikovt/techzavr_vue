@@ -13,31 +13,30 @@
               <span class="catalog__price">
                 {{product.price}} ₽
               </span>
-
-              <ul class="colors colors--black">
-                <li class="colors__item" v-for="color in product.colors" :key="color.id">
-                  <label class="colors__label">
-                    <input class="colors__radio sr-only"
-                      type="radio"
-                      :value="color.id"
-                      :v-model="color"
-                    >
-                    <span class="colors__value" :style="{'background-color': color.value}">
-                    </span>
-                  </label>
-                </li>
-              </ul>
+              <ColorList
+                :colors="product.colors"
+                :colorId="id"
+              />
             </li>
 </template>
 
 <script>
+import ColorList from './ColorList.vue';
 
 export default {
   data() {
     return {
       color: '#73B6EA',
+      id: 1,
     };
   },
-  props: ['product'],
+
+  props: {
+    product: Object,
+  },
+
+  components: {
+    ColorList,
+  },
 };
 </script>

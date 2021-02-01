@@ -6,11 +6,21 @@
           <fieldset class="form__block">
             <legend class="form__legend">Цена</legend>
             <label class="form__label form__label--price">
-              <input class="form__input" type="text" name="min-price" v-model="currentPriceFrom">
+              <input
+                class="form__input"
+                type="text"
+                name="min-price"
+                v-model.number="currentPriceFrom"
+              >
               <span class="form__value">От</span>
             </label>
             <label class="form__label form__label--price">
-              <input class="form__input" type="text" name="max-price" v-model="currentPriceTo">
+              <input
+                class="form__input"
+                type="text"
+                name="max-price"
+                v-model.number="currentPriceTo"
+              >
               <span class="form__value">До</span>
             </label>
           </fieldset>
@@ -32,21 +42,10 @@
 
           <fieldset class="form__block">
             <legend class="form__legend">Цвет</legend>
-            <ul class="colors">
-              <li class="colors__item"
-              v-for="color in colors"
-              :key="color.id"
-              >
-                <label class="colors__label">
-                  <input class="colors__radio sr-only"
-                  type="radio" name="color"
-                  :value="color.id" checked=""
-                  v-model="currentColorId">
-                  <span class="colors__value" :style="{'background-color': color.value}">
-                  </span>
-                </label>
-              </li>
-            </ul>
+            <ColorList
+            :colors="colors"
+            :color-id.sync="currentColorId"
+            />
           </fieldset>
 
           <fieldset class="form__block">
@@ -130,6 +129,7 @@
 <script>
 import categories from '../data/categories';
 import colors from '../data/colors';
+import ColorList from './ColorList.vue';
 
 export default {
   data() {
@@ -141,7 +141,16 @@ export default {
     };
   },
 
-  props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
+  props: {
+    priceFrom: Number,
+    priceTo: Number,
+    categoryId: Number,
+    colorId: Number,
+  },
+
+  components: {
+    ColorList,
+  },
 
   computed: {
     categories() {
@@ -154,7 +163,7 @@ export default {
 
   watch: {
     priceFrom(value) {
-      this.currentPriceFrom = value;
+      this.currentPriceFrom = Number(value);
     },
     priceTo(value) {
       this.currentPriceTo = value;
