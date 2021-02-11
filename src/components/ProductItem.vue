@@ -1,6 +1,6 @@
 <template>
     <li class="catalog__item">
-              <a class="catalog__pic" href="#">
+              <a class="catalog__pic" href="#" @click.prevent="gotoPage('product', {id: product.id})">
                 <img :src="product.image" :alt="product.title">
               </a>
 
@@ -11,7 +11,7 @@
               </h3>
 
               <span class="catalog__price">
-                {{product.price}} ₽
+                {{product.price | formatNumber}} ₽
               </span>
               <ColorList
                 :colors="product.colors"
@@ -21,7 +21,9 @@
 </template>
 
 <script>
+import formatNumber from '@/utils/formatNumber';
 import ColorList from './ColorList.vue';
+import gotoPage from '../utils/gotoPage';
 
 export default {
   data() {
@@ -35,8 +37,16 @@ export default {
     product: Object,
   },
 
+  filters: {
+    formatNumber,
+  },
+
   components: {
     ColorList,
+  },
+
+  methods: {
+    gotoPage,
   },
 };
 </script>
