@@ -1,3 +1,9 @@
+<style>
+  .color-list label {
+    --border-color: #666;
+  }
+</style>
+
 <template>
     <li class="catalog__item">
               <a class="catalog__pic" href="#" @click.prevent="gotoPage('product', {id: product.id})">
@@ -16,6 +22,7 @@
               <ColorList
                 :colors="product.colors"
                 :colorId="id"
+                class="color-list"
               />
             </li>
 </template>

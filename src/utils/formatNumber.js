@@ -1,3 +1,8 @@
 export default function formatNumber(value) {
-  return new Intl.NumberFormat().format(value) || '';
+  const num = new Intl.NumberFormat().format(value);
+  if (num === 'не число') {
+    return '';
+  }
+
+  return num;
 }
