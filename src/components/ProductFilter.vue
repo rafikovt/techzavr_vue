@@ -127,9 +127,11 @@
 </template>
 
 <script>
-import categories from '../data/categories';
+/* eslint-disable no-return-assign */
+import axios from 'axios';
 import colors from '../data/colors';
 import ColorList from './ColorList.vue';
+import { API_BASE_URL } from '../config';
 
 export default {
   data() {
@@ -138,6 +140,7 @@ export default {
       currentPriceTo: 0,
       currentCategoryId: 0,
       currentColorId: 0,
+      categoriesData: null,
     };
   },
 
@@ -154,7 +157,7 @@ export default {
 
   computed: {
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
     },
     colors() {
       return colors;
@@ -189,6 +192,14 @@ export default {
       this.$emit('update:categoryId', 0);
       this.$emit('update:colorId', 0);
     },
+    loadCategories() {
+      axios.get(`${API_BASE_URL}/api/productCategories`)
+        .then((response) => this.categoriesData = response.data);
+    },
+  },
+
+  created() {
+    this.loadCategories();
   },
 };
 </script>
