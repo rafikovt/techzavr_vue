@@ -1,6 +1,8 @@
 /* eslint-disable indent */
 <template>
-    <main class="content container">
+    <main v-if="this.productLoading">Загрузка товара...</main>
+    <main v-else-if="this.productLoadingFailed">Произошла ошибка при загрузке</main>
+    <main v-else class="content container">
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -135,33 +137,38 @@
 </template>
 
 <script>
-import products from '@/data/products';
-import categories from '@/data/categories';
 import formatNumber from '@/utils/formatNumber';
 import ColorList from '@/components/ColorList.vue';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export default {
   data() {
     return {
       productAmount: 1,
+      productData: null,
+      productLoading: false,
+      productLoadingFailed: false,
     };
   },
   components: { ColorList },
 
-  watch: {
-    '$route.params.id': function () {
-      if (!this.product) {
-        this.$router.replace({ name: 'notFoundPage' });
-      }
-    },
-  },
+  // watch: {
+  //   '$route.params.id': function () {
+  //     if (!this.product) {
+  //       this.$router.replace({ name: 'notFoundPage' });
+  //     }
+  //   },
+  // },
 
   computed: {
     product() {
-      return products.find((product) => product.id.toString() === this.$route.params.id.toString());
+      return this.productData
+        ? Object.assign(this.productData, { image: this.productData.image.file.url })
+        : {};
     },
     category() {
-      return categories.find((category) => category.id === this.product.categoryId);
+      return this.productData.category.id;
     },
   },
 
@@ -175,6 +182,31 @@ export default {
         'addProductToCart',
         { productId: this.product.id, amount: this.productAmount },
       );
+    },
+
+    loadProduct() {
+      this.productLoading = true;
+      this.productLoadingFailed = false;
+      axios
+        .get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
+        .then((response) => {
+          this.productData = response.data;
+        })
+        .catch(() => {
+          this.productLoadingFailed = true;
+        })
+        .then(() => {
+          this.productLoading = false;
+        });
+    },
+  },
+
+  watch: {
+    '$route.params.id': {
+      handler() {
+        this.loadProduct();
+      },
+      immediate: true,
     },
   },
 };
