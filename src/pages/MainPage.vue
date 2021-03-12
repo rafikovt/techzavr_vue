@@ -1,27 +1,25 @@
 <template>
-     <main class="content container">
+  <main class="content container">
     <div class="content__top content__top--catalog">
-      <h1 class="content__title">
-        Каталог
-      </h1>
-      <span class="content__info">
-        152 товара
-      </span>
+      <h1 class="content__title">Каталог</h1>
+      <span class="content__info"> 152 товара </span>
     </div>
     <div class="content__catalog">
       <ProductFilter
-      :price-from.sync="filterPriceFrom"
-      :price-to.sync="filterPriceTo"
-      :category-id.sync="filterCategoryId"
-      :color-id.sync="filterColorId"
+        :price-from.sync="filterPriceFrom"
+        :price-to.sync="filterPriceTo"
+        :category-id.sync="filterCategoryId"
+        :color-id.sync="filterColorId"
       />
       <section class="catalog">
-          <ProductList :products="products"/>
-          <BasePagination
+        <div v-if="productsLoading">Загрузка товаров, пожалуйста подождите...</div>
+        <div v-if="productsLoadingFailed">Произошла ошибка при загрузке<button @click.prevent="loadProducts">Попробовать еще раз</button></div>
+        <ProductList :products="products" />
+        <BasePagination
           v-model="page"
           :count="countProducts"
           :per-page="productsPerPage"
-          />
+        />
       </section>
     </div>
   </main>
@@ -49,8 +47,11 @@ export default {
       page: 1,
       productsPerPage: 3,
       productsData: null,
+      productsLoading: false,
+      productsLoadingFailed: false,
     };
   },
+
   computed: {
     products() {
       return this.productsData
@@ -68,6 +69,8 @@ export default {
   methods: {
     loadProducts() {
       clearTimeout(this.loadProductsTimer);
+      this.productsLoading = true;
+      this.productsLoadingFailed = false;
       this.loadProductsTimer = setTimeout(() => {
         axios
           .get(`${API_BASE_URL}/api/products`, {
@@ -81,6 +84,12 @@ export default {
           })
           .then((response) => {
             this.productsData = response.data;
+          })
+          .catch(() => {
+            this.productsLoadingFailed = true;
+          })
+          .then(() => {
+            this.productsLoading = false;
           });
       }, 0);
     },
