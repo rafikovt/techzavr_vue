@@ -65,9 +65,11 @@
                 </button>
               </div>
 
-              <button class="button button--primery" type="submit">
+              <button class="button button--primery" type="submit" :disabled="productAddSending">
                 В корзину
               </button>
+              <div v-show="productAdded">Продукт добавлен в корзину</div>
+              <div v-show="productAddSending">Добавляем продукт в корзину...</div>
             </div>
           </form>
         </div>
@@ -140,6 +142,7 @@
 import formatNumber from '@/utils/formatNumber';
 import ColorList from '@/components/ColorList.vue';
 import axios from 'axios';
+import { mapActions } from 'vuex';
 import { API_BASE_URL } from '../config';
 
 export default {
@@ -149,6 +152,9 @@ export default {
       productData: null,
       productLoading: false,
       productLoadingFailed: false,
+
+      productAdded: false,
+      productAddSending: false,
     };
   },
   components: { ColorList },
@@ -177,11 +183,17 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addProductToCart']),
+
     addtoCart() {
-      this.$store.commit(
-        'addProductToCart',
-        { productId: this.productData.id, amount: this.productAmount },
-      );
+      this.productAdded = false;
+      this.productAddSending = true;
+
+      this.addProductToCart({ productId: this.productData.id, amount: this.productAmount })
+        .then(() => {
+          this.productAdded = true;
+          this.productAddSending = false;
+        });
     },
 
     loadProduct() {
