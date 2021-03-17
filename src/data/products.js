@@ -1,8 +1,6 @@
-import { nanoid } from 'nanoid';
-
 export default [
   {
-    id: nanoid(),
+    id: 1,
     categoryId: 2,
     title: 'Радионяня Motorola MBP16',
     price: 3960,
@@ -23,7 +21,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 2,
     categoryId: 5,
     title: 'Электроскейт Razor Cruiser',
     price: 24690,
@@ -40,7 +38,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 3,
     categoryId: 5,
     title: 'Электрический дрифт-карт Razor Crazy Cart',
     price: 39990,
@@ -61,7 +59,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 4,
     categoryId: 3,
     title: 'Наушники AirPods с беспроводным зарядным футляром',
     price: 16560,
@@ -82,7 +80,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 5,
     categoryId: 4,
     title: 'Смартфон Xiaomi Redmi 6/128GB',
     price: 8960,
@@ -99,7 +97,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 6,
     categoryId: 1,
     title: 'Ультразвуковая зубная щётка Playbrush Smart Sonic',
     price: 5660,
@@ -120,7 +118,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 7,
     categoryId: 5,
     title: 'Детский трюковой самокат Razor Grom',
     price: 4990,
@@ -137,7 +135,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 8,
     categoryId: 3,
     title: 'Наушники Sony',
     price: 30690,
@@ -158,7 +156,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 9,
     categoryId: 5,
     title: 'Гироскутер Razor Hovertrax 2.0',
     price: 34900,
@@ -175,7 +173,7 @@ export default [
     ],
   },
   {
-    id: nanoid(),
+    id: 10,
     categoryId: 4,
     title: 'Сотовый телефон',
     price: 21790,

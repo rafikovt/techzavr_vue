@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import products from '@/data/products';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 
@@ -48,7 +47,6 @@ export default new Vuex.Store({
     },
 
     syncCartProducts(state) {
-      console.log(state.cartProductsData);
       state.cartProducts = state.cartProductsData.map((item) => ({
         productId: item.product.id,
         amount: item.quantity,
@@ -58,10 +56,16 @@ export default new Vuex.Store({
 
   getters: {
     cartDetailProducts(state) {
-      return state.cartProducts.map((item) => ({
-        ...item,
-        product: products.find((p) => p.id === item.productId),
-      }));
+      return state.cartProducts.map((item) => {
+        const { product } = state.cartProductsData.find((p) => p.product.id === item.productId);
+        return {
+          ...item,
+          product: {
+            ...product,
+            image: product.image.file.url,
+          },
+        };
+      });
     },
 
     cartTotalPrice(state, getters) {
@@ -77,12 +81,11 @@ export default new Vuex.Store({
         },
       })
         .then((response) => {
-          console.log(response);
           if (!context.state.userAccessKey) {
             localStorage.setItem('userAccessKey', response.data.user.accessKey);
             context.commit('updateUserAccessKey', response.data.user.accessKey);
           }
-
+          console.log(response.data.items);
           context.commit('updateCartProductsData', response.data.items);
           context.commit('syncCartProducts');
         });

@@ -180,7 +180,7 @@ export default {
     addtoCart() {
       this.$store.commit(
         'addProductToCart',
-        { productId: this.product.id, amount: this.productAmount },
+        { productId: this.productData.id, amount: this.productAmount },
       );
     },
 
