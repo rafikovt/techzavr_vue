@@ -42,7 +42,6 @@
 
 <script>
 import formatNumber from '@/utils/formatNumber';
-import { mapMutations } from 'vuex';
 
 export default {
   props: {
@@ -65,7 +64,10 @@ export default {
   },
 
   methods: {
-    ...mapMutations({ deleteProduct: 'deleteProduct' }),
+    deleteProduct(id) {
+      const productId = id.toString();
+      this.$store.dispatch('deleteProduct', { productId });
+    },
   },
 };
 </script>

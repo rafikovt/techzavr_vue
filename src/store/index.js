@@ -113,10 +113,26 @@ export default new Vuex.Store({
           },
         })
         .then((response) => {
-          console.log(response);
           context.commit('updateCartProductsData', response.data.items);
         })
         .catch(() => {
+          context.commit('syncCartProducts');
+        });
+    },
+
+    deleteProduct(context, { productId }) {
+      console.log(productId);
+      console.log(context.state.userAccessKey);
+      return axios
+        .delete(`${API_BASE_URL}/api/baskets/products`, {
+          productId: productId.toString(),
+        }, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          context.commit('updateCartProductsData', response.data.items);
           context.commit('syncCartProducts');
         });
     },
